@@ -1,0 +1,415 @@
+---
+title: "Anova results"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+the purpose of this code is to carry out an anova analysis on the data prepared by Reza
+
+
+This chunck has to be rune one time to install the package on the disk
+```{r}
+install.packages("tidyverse")
+install.packages("ggpbur")
+install.packages("rstatix")
+install.packages("tibble")
+install.packages("datarium")
+install.packages("GGally")
+install.packages("caret")
+install.packages("GGally")
+
+```
+
+```{r}
+
+install.packages("mlbench")
+```
+
+```{r}
+library(tibble)
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
+library(caret)
+library(plyr)
+library(readr)
+library(ggplot2)
+library(GGally)
+library(dplyr)
+library(mlbench)
+```
+
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("Obj","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(Obj,type = "mean_sd")
+```
+
+#```{r}
+
+#preproc1 <- preProcess(dat[,c(1:4,6)], method=c("center", "scale"))
+ 
+#norm1 <- predict(preproc1, dat[,c(1:4,6)])
+ 
+#summary(norm1)
+#```
+
+#```{r}
+
+#dat <- read_csv("SummaryResults.txt")
+#glimpse(dat)
+#```
+
+
+#```{r}
+#data =data_anova
+#summary(data)
+
+#process <- preProcess(as.data.frame(data), method=c("range"))
+#norm_scale <- predict(process, as.data.frame(data))
+
+#```
+
+#```{r}
+#min_max_norm <- function(x) {
+#    (x - min(x)) / (max(x) - min(x))
+#  }
+  
+#data_norm <- as.data.frame(lapply(data_anova[1:4], min_max_norm))
+
+#head(data_norm)
+#```
+
+
+#```{r}
+#data("data_anova", package = "datarium")
+#head(data_anova, 81)
+#```
+
+
+
+
+
+
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("DistanceTraveled","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(DistanceTraveled,type = "mean_sd")
+```
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("DistanceTraveled","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(DistanceTraveled,type = "mean_sd")
+```
+
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Demand", y = "DistanceTraveled", 
+  color = "Capacity", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Capacity", y = "DistanceTraveled", 
+  color = "Demand", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("RidingTime","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(RidingTime,type = "mean_sd")
+```
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Demand", y = "RidingTime", 
+  color = "Capacity", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Capacity", y = "RidingTime", 
+  color = "Demand", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+
+
+
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("WaitingTime","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(WaitingTime,type = "mean_sd")
+```
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Demand", y = "WaitingTime", 
+  color = "Capacity", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Capacity", y = "WaitingTime", 
+  color = "Demand", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("Obj","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(Obj,type = "mean_sd")
+```
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Demand", y = "Obj", 
+  color = "Capacity", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+
+```{r}
+bxp <- ggboxplot(
+  data_anova, x = "Capacity", y = "Obj", 
+  color = "Demand", palette = "jco", facet.by = "Slack"
+  )
+bxp
+
+
+```
+```{r}
+bxp <- ggboxplot(data_anova, x = "Capacity", y = "Obj")
+bxp
+
+```
+
+```{r}
+bxp <- ggboxplot(data_anova, x = "Slack", y = "Obj")
+bxp
+
+```
+
+
+
+#```{r}
+#data_anova %>%
+#  group_by(Demand) %>%
+#  shapiro_test(Obj)
+
+#```
+# if the p-value is >0.05, it shows that the data is normalized. this is the Shapiro-Wilk's test.
+
+#```{r}
+#data_anova %>%
+#  group_by(Slack) %>%
+#  shapiro_test(Obj)
+
+#```
+
+
+#```{r}
+#data_anova %>%
+#  group_by(Capacity) %>%
+#  shapiro_test(Obj)
+
+#```
+
+
+
+
+
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("Obj","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand, Capacity,Slack) %>%
+  get_summary_stats(Obj,type = "mean_sd")
+```
+
+
+
+
+```{r}
+data_anova %>%
+  group_by(Slack) %>%
+  identify_outliers(Obj)
+```
+
+```{r}
+model  <- lm(Obj ~ Demand*Capacity*Slack, data = data_anova)
+# Créer un QQ plot des résidus
+ggqqplot(residuals(model))
+# Calculer le test de normalité de Shapiro-Wilk
+shapiro_test(residuals(model))
+```
+```{r}
+res.anova <-data_anova %>% anova_test(Obj ~ Slack*Demand*Capacity)
+res.anova
+```
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("WaitingTime","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+res.anova <-data_anova %>% anova_test(WaitingTime ~ Slack*Demand*Capacity)
+res.anova
+```
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("RidingTime","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+res.anova <-data_anova %>% anova_test(RidingTime ~ Slack*Demand*Capacity)
+res.anova
+```
+
+
+```{r}
+path_data<-"/home/shahinr/Desktop/ANOVA/"
+name_data_file <-"SummaryResults.txt"
+data_file<-paste(path_data, name_data_file,sep="")
+
+# read the table it seems that header = TRUE does not set the colunm name but with tibble, it works
+mydata <- tibble(read.table(data_file, header = TRUE))
+data_anova<-mydata[,c("DistanceTraveled","Slack", "Demand", "Capacity")]
+data_anova <- data_anova %>% mutate(Demand=as.factor(Demand), Capacity=as.factor(Capacity), Slack=as.factor(Slack))
+
+```
+
+```{r}
+data_anova  %>%  group_by(Demand) %>%
+  get_summary_stats(DistanceTraveled,type = "mean_sd")
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
